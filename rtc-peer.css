@@ -1,0 +1,35 @@
+select {
+	width: 100%;
+}
+
+input:disabled {
+	
+	border: 1px solid rgba(160,160,160,1);
+	background: rgba(216,216,216,1);
+	
+}
+
+[data-roll="offer"] :is(#answer, #ice-servers, #remote-offer),
+[data-roll="answer"] :is(#create-offer-button, #offer, #remote-answer, #remote-ice) {
+	
+	display: none;
+	
+}
+
+#peer-id {
+	
+	display: flex;
+	
+}
+
+[name="peer-legend-label"]:before {
+	
+	content: ":";
+	
+}
+
+#connection-state {
+	
+	margin: 0 0 0 .4rem;
+	
+}

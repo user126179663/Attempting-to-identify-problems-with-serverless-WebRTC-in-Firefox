@@ -1,0 +1,49 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	max-width: 100%;
+	width: 100%;
+}
+#main {
+	display: flex;
+	position: relative;
+}
+rtc-peer {
+	display: block;
+	flex: 1 1 auto;
+	width: 50%;
+}
+#result {
+	display: inline-block;
+}
+
+.pointer {
+	
+	align-items: center;
+	display: flex;
+	font: normal normal bold 1.2rem/1 sans-serif;
+	position: absolute;
+	margin: 0 0 0 .3rem;
+	left: calc((var(--target-offset-left) + var(--target-width)) - var(--correction-left, 0px) + var(--correction-right, 0px));
+	top: calc((var(--target-offset-top) + (var(--target-height) - var(--height)) / 2) - var(--correction-top, 0px) + var(--correction-bottom, 0px));
+	
+}
+.pointer:before {
+	
+	content: "👈";
+	height: var(--size);
+	text-shadow: 0 0 5px rgba(0,0,0,1);
+	
+}
+.pointer:after {
+	
+	background: rgba(255,0,0,1);
+	border-radius: .3rem;
+	color: rgba(255,255,255,1);
+	content: attr(data-note);
+	margin: 0 0 0 .3rem;
+	padding: .4rem;
+	
+}
