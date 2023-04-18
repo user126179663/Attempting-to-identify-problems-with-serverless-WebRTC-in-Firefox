@@ -1,7 +1,7 @@
 addEventListener(
-	'DOMContentLoaded',
+	'load',
 	async () => {
-		
+		//coco ホスト上のページは遅延のためか正確な要素のサイズ情報を取れず最初のガイドのポインターの位置がおかしくなる時がある
 		const	pastingCallback =	(event, rs) =>	{
 																
 																const	{ target } = event,
@@ -97,7 +97,7 @@ addEventListener(
 		}),
 		
 		pointer.classList.add('pointer'),
-		i1=-1,
+		
 		(io = new IntersectionObserver(
 			() => {
 				
@@ -106,10 +106,13 @@ addEventListener(
 				
 				dr.top > pr.top && pointer.style.setProperty('--correction-top', parseInt(dr.top - pr.top) + 'px'),
 				dr.left > pr.left && pointer.style.setProperty('--correction-left', parseInt(dr.left - pr.left) + 'px'),
+				
 				(dr.left + dr.width) < (pr.left + pr.width) &&
 					pointer.style.setProperty('--correction-right', parseInt((pr.left + pr.width) - (dr.left + dr.width)) + 'px'),
 				(dr.top + dr.height) < (pr.top + pr.height) &&
 					pointer.style.setProperty('--correction-bottom', parseInt((dr.top + dr.height) - (pr.top + pr.height)) + 'px');
+				
+				resized?.();
 				
 			},
 			{ root: document, threshold: 1 })
@@ -148,12 +151,16 @@ addEventListener(
 				v = getComputedStyle(pointer, ':after');
 				for (k in rect) typeof rect[k] === 'number' && pointer.style.setProperty('--after-' + k, v[k]);
 				
+				
+				
 			},
 			addEventListener('resize', resized),
 			(ro = new ResizeObserver(resized)).observe(node),
 			
 			(mo = new MutationObserver(() => document.body.classList.contains('display-guide') && resized())).
 				observe(document.body, { attributes: true, attributeFilter: [ 'class' ]}),
+			
+			resized(),
 			
 			await	new Promise(
 										rs =>	node.addEventListener(

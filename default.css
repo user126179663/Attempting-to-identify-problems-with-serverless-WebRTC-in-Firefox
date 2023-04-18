@@ -160,6 +160,7 @@ body:not(.display-guide) .pointer {
 	flex-direction: column;
 	position: absolute;
 	margin: .3rem 0 0 0;
+	max-width: 100%;
 	left: calc(((var(--target-x) + var(--target-width) / 2) - var(--width) / 2) + var(--correction-left, 0px) - var(--correction-right, 0px));
 	top: calc((var(--target-y) + var(--target-height)) + var(--correction-top, 0px) + var(--correction-bottom, 0px) + var(--before-height));
 	z-index: 1;
@@ -169,7 +170,7 @@ body:not(.display-guide) .pointer {
 	
 	content: "👆";
 	height: var(--size);
-	left: calc((var(--target-offset-left) - var(--offset-left) + var(--target-width) / 2) - var(--before-width) / 2 + var(--correction-right, 0px));
+	left: calc((var(--target-offset-left) - var(--offset-left) + var(--target-width) / 2) - var(--before-width) / 2);
 	top: calc(var(--before-height) * -1);
 	position: absolute;
 	text-shadow: 0 0 5px rgba(0,0,0,1);
