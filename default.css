@@ -72,9 +72,9 @@ body {
 }
 #result-tweet {
 	
-	--bounce-scale-y-0: 55%;
+	--bounce-scale-y-0: 60%;
 	--bounce-scale-y-1: 100%;
-	--bounce-scale-y-2: 50%;
+	--bounce-scale-y-2: 60%;
 	--bounce-scale-y-3: 100%;
 	--bounce-translate-y-0: -1.5rem;
 	--bounce-translate-y-1: 0;
@@ -87,7 +87,7 @@ body {
 	width: var(--anchor-size);
 	transform-origin: center bottom;
 	
-	animation: bounce 1.5s linear 1s infinite forwards running;
+	animation: bounce 1.5s linear 1s infinite normal forwards running;
 	
 }
 #result-tweet:not([href]) {
@@ -99,22 +99,22 @@ body {
 	5% {
 		transform: scale(1, var(--bounce-scale-y-0));
 	}
-	14% {
+	15% {
 		transform: scale(1, var(--bounce-scale-y-0));
 	}
 	25% {
 		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-0));
 	}
-	35% {
+	40% {
 		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-0));
 	}
-	40% {
+	45% {
 		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-1));
 	}
-	45% {
+	50% {
 		transform: scale(1, var(--bounce-scale-y-2));
 	}
-	55% {
+	60% {
 		transform: scale(1, var(--bounce-scale-y-3));
 	}
 }
@@ -146,36 +146,86 @@ rtc-peer {
 	flex: 1 0 auto;
 }
 
+body:not(.display-guide) .pointer {
+	
+	display: none;
+	
+}
+
 .pointer {
 	
 	align-items: center;
 	display: flex;
 	-display: none !important;
 	flex-direction: column;
-	font: normal normal bold 1.2rem/1 sans-serif;
 	position: absolute;
-	margin: 0 0 0 .3rem;
-	left: calc(((var(--target-x) + var(--target-width) / 2) - var(--width) / 2) + var(--correction-left, 0px) + var(--correction-right, 0px));
+	margin: .3rem 0 0 0;
+	left: calc(((var(--target-x) + var(--target-width) / 2) - var(--width) / 2) + var(--correction-left, 0px) - var(--correction-right, 0px));
 	top: calc((var(--target-y) + var(--target-height)) + var(--correction-top, 0px) + var(--correction-bottom, 0px) + var(--before-height));
+	z-index: 1;
 	
 }
 .pointer:before {
 	
 	content: "👆";
 	height: var(--size);
-	left: calc((var(--target-offset-left) - var(--offset-left) + var(--target-width) / 2) - var(--before-width) / 2);
+	left: calc((var(--target-offset-left) - var(--offset-left) + var(--target-width) / 2) - var(--before-width) / 2 + var(--correction-right, 0px));
 	top: calc(var(--before-height) * -1);
 	position: absolute;
 	text-shadow: 0 0 5px rgba(0,0,0,1);
 	
-}
-.pointer:after {
+	animation: pointing 1.5s steps(2, start) 0s infinite normal forwards running;
 	
-	background: rgba(255,0,0,1);
+}
+@keyframes pointing {
+	from {
+		
+		transform: translate(0,0);
+		
+	}
+	to {
+		
+		transform: translate(0, -.5rem);
+		
+	}
+}
+#pointer-node {
+	
+	background: rgba(255,40,40,1);
 	border-radius: .3rem;
-	color: rgba(255,255,255,1);
 	content: attr(data-note);
-	margin: 0 0 0 .3rem;
-	padding: .4rem;
+	font: normal normal bold 80%/1.5 "源ノ角ゴシック 特細";
+	letter-spacing: .15rem;
+	margin: 0rem 0 0 0;
+	padding: .6rem;
+	
+}
+#pointer-content {
+	
+	color: rgba(255,255,255,1);
+	
+}
+#pointer-progress {
+	
+	
+	
+}
+
+#guide-handler {
+	
+	display: flex;
+	justify-content: start;
+	user-select: none;
+	width: 100%;
+	
+}
+#guide-handler-node {
+	
+	margin: .3rem;
+	
+}
+#guide-handler-checkbox {
+	
+	margin: 0 .3rem 0 0;
 	
 }
