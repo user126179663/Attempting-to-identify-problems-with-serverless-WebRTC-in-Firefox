@@ -18,50 +18,53 @@
 				<fieldset id="own-fieldset">
 					<legend id="local-legend">Local</legend>
 					<button id="create-offer-button" type="button">Create Offer</button>
-					<div id="offer">
+					<div id="offer" class="flex align-center">
 						<label for="offer-input">Offer</label><input id="offer-input" /><button is="copy-button" for="offer-input">Copy</button>
 					</div>
-					<div id="answer">
+					<div id="answer" class="flex align-center">
 						<label for="answer-input">Answer</label><input id="answer-input" /><button is="copy-button" for="answer-input">Copy</button>
 					</div>
-					<div id="ice-servers">
-						<label for="ice-servers-select">ICE Servers</label><select id="ice-servers-select"></select>
+					<div id="ice-servers" class="flex align-center">
+						<label for="ice-servers-select">ICE</label><select id="ice-servers-select"></select>
 						<button id="ice-servers-copy-button" type="button">Copy All</button>
 					</div>
 				</fieldset>
 				<fieldset id="remote-fieldset">
 					<legend>Remote</legend>
-					<div id="remote-offer">
+					<div id="remote-offer" class="flex align-center">
 						<label for="remote-offer-input">Offer</label><input id="remote-offer-input" /><button id="remote-offer-apply-button" type="button">Apply</button>
 					</div>
-					<div id="remote-answer">
+					<div id="remote-answer" class="flex align-center">
 						<label for="remote-answer-input">Answer</label><input id="remote-answer-input" /><button id="remote-answer-apply-button" type="button">Apply</button>
 					</div>
-					<div id="remote-ice">
+					<div id="remote-ice" class="flex align-center">
 						<label for="remote-ice-input">ICE</label><input id="remote-ice-input" /><button id="ice-add-button" type="button">Add</button>
 					</div>
 				</fieldset>
 			</fieldset>
 		</template>
 		
+		<div id="result">
+			<div id="result-label">Result</div>
+			<div id="result-container">
+				<div id="result-data">
+					<div><span id="result-answer">Answer</span> [<span id="result-answer-status-label">State</span>: <span id="result-answer-status">N/A</span>, <span id="result-answer-elapse-label">Attempt Time</span>: <span id="result-answer-elapse">N/A</span>]</div><div><span id="result-answer">Offer</span> [<span id="result-offer-status-label">State</span>: <span id="result-offer-status">N/A</span>, <span id="result-offer-elapse-label">Attempt Time</span>: <span id="result-offer-elapse">N/A</span>]</div>
+				</div>
+				<a id="result-tweet"><img id="result-tweet-image" src="assets/Twitter social icons - circle - blue.svg"></a>
+			</div>
+		</div>
+		
 		<section id="main">
 			<rtc-peer id="offer" class="offer" template="template-rtc-peer" roll="offer">
 				<span slot="peer-legend-separator">:</span>
 				<span slot="peer-legend-label">offer</span>
 			</rtc-peer>
+			<div id="main-separator"></div>
 			<rtc-peer id="answer" class="answer" template="template-rtc-peer" roll="answer">
 				<span slot="peer-legend-separator">:</span>
 				<span slot="peer-legend-label">after</span>
 			</rtc-peer>
 		</section>
-		
-		<div id="result">
-			<div>Result</div>
-			<div id="result-data">
-				<span id="result-answer">Answer</span> [<span id="result-answer-status-label">State</span>: <span id="result-answer-status">N/A</span>, <span id="result-answer-elapse-label">Attempt Time</span>: <span id="result-answer-elapse">N/A</span>]<br> <span id="result-answer">Offer</span> [<span id="result-offer-status-label">State</span>: <span id="result-offer-status">N/A</span>, <span id="result-offer-elapse-label">Attempt Time</span>: <span id="result-offer-elapse">N/A</span>]
-			</div>
-			<button is="copy-button" id="result-copy-button" for="result-data" trim>Copy</button>
-		</div>
 		
 	</body>
 </html>

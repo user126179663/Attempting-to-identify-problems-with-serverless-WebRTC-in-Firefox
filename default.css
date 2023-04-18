@@ -1,39 +1,171 @@
+@font-face {
+	font-family: "SourceCodePro";
+	src: url("assets/SourceCodePro-Regular.ttf");
+}
+@font-face {
+	font-family: "SourceCodePro";
+	font-weight: 900 1000;
+	src: url("assets/SourceCodePro-Bold.ttf");
+}
+:root {
+	--global-background-color: hsl(0deg 0% 99%);
+	--button-text-color: hsl(0deg 0% 6.375%);
+	--text-color: hsl(0deg,0%,40%,1);
+	--input-text-border-color: hsl(0deg 0% 47%);
+	--input-text-focused-border-color: hsl(0deg 0% 63%);
+}
 * {
+	color: hsl(0deg,0%,40%,1);
 	margin: 0;
 	padding: 0;
 }
+html {
+	background: var(--global-background-color);
+	font: normal normal normal 1.2rem/1 "SourceCodePro";
+}
 html, body {
+	height: 100%;
 	max-width: 100%;
+	min-height: 100%;
 	width: 100%;
 }
-#main {
+body {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+#result {
+	
+	--anchor-size: 3rem;
+	
+	display: inline-block;
+	margin: 1rem 0rem 2rem;
+	
+}
+#result-container {
+	display: flex;
+}
+#result-label {
+	display: flex;
+	justify-content: center;
+	margin: 0 0 .5rem 0;
+	text-decoration: underline;
+	text-decoration-thickness: .1rem;
+}
+#result-container {
+	align-items: center;
 	display: flex;
 	position: relative;
 }
+#result-copy-button {
+	background: transparent;
+	border: none;
+}
+#result-data {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+#result-data > * {
+	display: flex;
+	justify-content: center;
+}
+#result-tweet {
+	
+	--bounce-scale-y-0: 55%;
+	--bounce-scale-y-1: 100%;
+	--bounce-scale-y-2: 50%;
+	--bounce-scale-y-3: 100%;
+	--bounce-translate-y-0: -1.5rem;
+	--bounce-translate-y-1: 0;
+	
+	align-items: center;
+	display: flex;
+	height: var(--anchor-size);
+	position: absolute;
+	right: calc(var(--anchor-size) * -1.1);
+	width: var(--anchor-size);
+	transform-origin: center bottom;
+	
+	animation: bounce 1.5s linear 1s infinite forwards running;
+	
+}
+#result-tweet:not([href]) {
+	
+	display: none;
+	
+}
+@keyframes bounce {
+	5% {
+		transform: scale(1, var(--bounce-scale-y-0));
+	}
+	14% {
+		transform: scale(1, var(--bounce-scale-y-0));
+	}
+	25% {
+		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-0));
+	}
+	35% {
+		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-0));
+	}
+	40% {
+		transform: scale(1, var(--bounce-scale-y-1)) translate(0, var(--bounce-translate-y-1));
+	}
+	45% {
+		transform: scale(1, var(--bounce-scale-y-2));
+	}
+	55% {
+		transform: scale(1, var(--bounce-scale-y-3));
+	}
+}
+#result-tweet-image {
+	
+	will-change: transform;
+	
+	animation: spawn .3s cubic-bezier(.53,-0.52,.19,2.86) .0s 1 normal forwards running;
+	
+}
+@keyframes spawn {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+#main {
+	display: flex;
+	position: relative;
+	width: 100%;
+}
 rtc-peer {
 	display: block;
-	flex: 1 1 auto;
-	width: 50%;
-}
-#result {
-	display: inline-block;
+	flex: 1 0 auto;
 }
 
 .pointer {
 	
 	align-items: center;
 	display: flex;
+	-display: none !important;
+	flex-direction: column;
 	font: normal normal bold 1.2rem/1 sans-serif;
 	position: absolute;
 	margin: 0 0 0 .3rem;
-	left: calc((var(--target-offset-left) + var(--target-width)) - var(--correction-left, 0px) + var(--correction-right, 0px));
-	top: calc((var(--target-offset-top) + (var(--target-height) - var(--height)) / 2) - var(--correction-top, 0px) + var(--correction-bottom, 0px));
+	left: calc(((var(--target-x) + var(--target-width) / 2) - var(--width) / 2) + var(--correction-left, 0px) + var(--correction-right, 0px));
+	top: calc((var(--target-y) + var(--target-height)) + var(--correction-top, 0px) + var(--correction-bottom, 0px) + var(--before-height));
 	
 }
 .pointer:before {
 	
-	content: "👈";
+	content: "👆";
 	height: var(--size);
+	left: calc((var(--target-offset-left) - var(--offset-left) + var(--target-width) / 2) - var(--before-width) / 2);
+	top: calc(var(--before-height) * -1);
+	position: absolute;
 	text-shadow: 0 0 5px rgba(0,0,0,1);
 	
 }

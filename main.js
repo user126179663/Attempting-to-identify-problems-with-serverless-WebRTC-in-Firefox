@@ -53,19 +53,33 @@ addEventListener(
 				changedSignalState =	({ target }) => target.signalingState === 'stable' &&
 												(target.elapse = Date.now(), target.waiting = setInterval(updateResult, 16, target))
 				changedIceState =
-					({ target }) => (target.iceConnectionState  === 'new' || target.iceConnectionState  === 'checking') ||
-								(clearInterval(target.waiting), updateResult(target)),
-				updateResult = peer =>
-					(
+					({ target }, rs) => (target.iceConnectionState  === 'new' || target.iceConnectionState  === 'checking') ||
+								(clearInterval(target.waiting), updateResult(target), rs()),
+				updateResult = peer => {
+						let v;
 						document.getElementById('result-' + (peer === offer ? 'offer' : 'answer') + '-status').textContent = peer.iceConnectionState,
-						document.getElementById('result-' + (peer === offer ? 'offer' : 'answer') + '-elapse').textContent = ((Date.now() - peer.elapse) / 1000) + 's'
-					);
-		let i,k,v, i0,l0, g, rect, resized, ro,io, elapse, waiting;
+						v = (''+((Date.now() - peer.elapse) / 1000)).split('.')
+						document.getElementById('result-' + (peer === offer ? 'offer' : 'answer') + '-elapse').textContent = v[0] + '.' + (v?.[1] ?? '0').padStart(3, '0') + 's'
+					};
+		let i,k,v, i0,l0, g, rect,nodeRect, resized, ro,io, elapse, waiting, callback;
 		
 		answer.addEventListener('signalingstatechange', changedSignalState),
-		answer.addEventListener('iceconnectionstatechange', changedIceState),
 		offer.addEventListener('signalingstatechange', changedSignalState),
-		offer.addEventListener('iceconnectionstatechange', changedIceState),
+		
+		Promise.all(
+			[
+				new Promise(rs => answer.addEventListener('iceconnectionstatechange', event => changedIceState(event, rs))),
+				new Promise(rs => offer.addEventListener('iceconnectionstatechange', event => changedIceState(event, rs))),
+			]
+		).then(() => {
+			
+			const tweet = document.getElementById('result-tweet');
+			
+			tweet.href =	'https://twitter.com/intent/tweet?' +
+								'text=' + document.getElementById('result-data').textContent.trim() + '&' +
+								'via=' + 'code_zerodivide';
+			
+		}),
 		
 		pointer.classList.add('pointer'), document.body.appendChild(pointer),
 		
@@ -75,12 +89,12 @@ addEventListener(
 				const dr = document.body.getBoundingClientRect(), pr = pointer.getBoundingClientRect();
 				let k,v;
 				
-				dr.top > pr.top && pointer.style.setProperty('--correction-top', pr.top - dr.top + 'px'),
-				dr.left > pr.left && pointer.style.setProperty('--correction-left', pr.left - dr.left + 'px'),
+				dr.top > pr.top && pointer.style.setProperty('--correction-top', dr.top - pr.top + 'px'),
+				dr.left > pr.left && pointer.style.setProperty('--correction-left', dr.left - pr.left + 'px'),
 				(dr.left + dr.width) < (pr.left + pr.width) &&
 					pointer.style.setProperty('--correction-right', (pr.left + pr.width) - (dr.left + dr.width) + 'px'),
 				(dr.top + dr.height) < (pr.top + pr.height) &&
-					pointer.style.setProperty('--correction-bottom', (pr.top + pr.height) - (dr.top + dr.height) + 'px');
+					pointer.style.setProperty('--correction-bottom', (dr.top + dr.height) - (pr.top + pr.height) + 'px');
 				
 			},
 			{ root: document, threshold: 1 })
@@ -97,8 +111,7 @@ addEventListener(
 			resized = (a) => {
 				
 				rect = node.getBoundingClientRect();
-				for (k in rect) typeof (v = rect[k]) === 'number' &&
-					(
+				for (k in rect) typeof (v = rect[k]) === 'number' && (
 						pointer.style.setProperty('--last-target-' + k, pointer.style.getPropertyValue('--target-' + k)),
 						pointer.style.setProperty('--target-' + k, v + 'px')
 					);
@@ -114,6 +127,11 @@ addEventListener(
 				pointer.style.setProperty('--offset-left', pointer.offsetLeft + 'px'),
 				pointer.style.setProperty('--offset-top', pointer.offsetTop + 'px');
 				
+				v = getComputedStyle(pointer, ':before');
+				for (k in rect) typeof rect[k] === 'number' && pointer.style.setProperty('--before-' + k, v[k]);
+				v = getComputedStyle(pointer, ':after');
+				for (k in rect) typeof rect[k] === 'number' && pointer.style.setProperty('--after-' + k, v[k]);
+				
 			},
 			addEventListener('resize', resized),
 			(ro = new ResizeObserver(resized)).observe(node),
@@ -121,11 +139,18 @@ addEventListener(
 			await	new Promise(
 										rs =>	node.addEventListener(
 													g.type,
-													typeof g.callback === 'function' ? event => g.callback(event, rs) : rs,
-													g.option ?? { once: true }
+													callback =
+														typeof g.callback === 'function' ? event => g.callback(event, rs) : rs,
+													g.option ??= { once: true }
 												)
 									),
 			
+			pointer.style.removeProperty('--correction-bottom'),
+			pointer.style.removeProperty('--correction-left'),
+			pointer.style.removeProperty('--correction-right'),
+			pointer.style.removeProperty('--correction-top'),
+			
+			removeEventListener(g.type, callback, g.option),
 			removeEventListener('resize', resized),
 			ro.disconnect(node);
 			

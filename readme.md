@@ -1,5 +1,6 @@
-# 何を目的とするスクリプトなのか
-　Firefox で、 [STUN サーバー](https://ja.wikipedia.org/wiki/STUN)を使わない、[WebRTC](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API) によるサーバーレス P2P 通信を行なえるかどうかの確認を行なうスクリプトです。このスクリプトでは、ピアー間での [SDP](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API/Protocols#sdp) や [ICE](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API/Protocols#ice) の情報の交換を入力フォームを通じた手動で行ないます。これは、ローカルマシン内の異なるブラウザー間で行なう通信を、（使用側も、実装側も）極めて低コストに行なう状況を想定しています。しかし、Firefox は、この情報の交換がタイムアウトするまでの時間が極端に短く、手動による交換ではとても間に合いません。ただし、Firefox でサーバーレス通信に成功したと言う[報告](https://stackoverflow.com/questions/54167645/serverless-webrtc-sdp-ice-timeout)もあり、その成否が Firefox によるのか、実行環境によるのか見極め難い現状があります。なお、Chromium では手動による交換で通信の確立を行えることを確認しています。
+# このスクリプトはなに？
+　[WebRTC](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API) によるサーバーレス P2P 通信の確認を行なうスクリプトです。このスクリプトでは、ピアー間での [SDP](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API/Protocols#sdp) や [ICE](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API/Protocols#ice) の情報の交換を入力フォームを通じた手動で行ないます。あくまで確認用なので、通信するのは接続の確立までです。
 
+　WebRTCには
 # 使用方法
 　``index.html`` をブラウザーで読み込めば動作します。ページ内で順を追って示される手順を辿ることで結果が表示されます。もしご協力いただけるなら、その結果を [@code_zerodivide](https://twitter.com/code_zerodevide) に送っていただけると大変助かります。
