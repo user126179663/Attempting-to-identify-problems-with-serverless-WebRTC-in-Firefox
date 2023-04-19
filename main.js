@@ -1,7 +1,7 @@
 addEventListener(
 	'load',
 	async () => {
-		//coco ホスト上のページは遅延のためか正確な要素のサイズ情報を取れず最初のガイドのポインターの位置がおかしくなる時がある
+		
 		const	pastingCallback =	(event, rs) =>	{
 																
 																const	{ target } = event,
